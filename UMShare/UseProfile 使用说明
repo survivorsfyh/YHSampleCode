@@ -1,0 +1,55 @@
+当前 code 基于 UMShare SDK 6.9.3,若版本相差较大,仅供参考.
+友盟分享官方文档: https://developer.umeng.com/docs/66632/detail/66825
+注:因产品需求各有出入,具体实现可能也存在差异,具体详见对应实现方法并依据实际产品需要进行改良.
+
+博客友盟分享使用小结: 
+https://blog.csdn.net/survivorsfyh/article/details/82426687
+
+使用:
+首先,将该类导入至工程并在 appdelegate 中引入头文件
+// Share
+#import "AppDelegate+UMShare.h"
+
+其次,在程序入口方法中(didFinishLaunchingWithOptions)调用接口方法
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Override point for customization after application launch.
+    
+    // Share
+    [self registerUMShare:launchOptions];
+    
+    return YES;
+}
+
+最后,在实现类中将友盟申请的对应 key 填入其中即可
+/**
+ 共享平台配置
+ */
+- (void)configUSharePlatforms {
+    /*
+     设置微信的 appKey 和 appSecret
+     
+     AppID:
+     AppSecret:
+     */
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession
+                                          appKey:@"此处填写对应申请的 AppKey"
+                                       appSecret:@"此处填写对应申请的 AppSecret"
+                                     redirectURL:@"此处填写对应的链接(例如官网)"];
+    
+    /*
+     设置分享到 QQ 互联的 appID
+     U-Share SDK为了兼容大部分平台命名，统一用appKey和appSecret进行参数设置，而QQ平台仅需将appID作为U-Share的appKey参数传进即可。
+     
+     iPhone:
+     iPad:
+     */
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ
+                                          appKey:@"设置QQ平台的appID"
+                                       appSecret:@"QQ平台为appKey"
+                                     redirectURL:@"此处填写对应的链接(例如官网)"];
+    
+    /*
+     * 移除相应平台的分享，如微信收藏
+     */
+//    [[UMSocialManager defaultManager] removePlatformProviderWithPlatformTypes:@[@(UMSocialPlatformType_WechatFavorite)]];
+}
